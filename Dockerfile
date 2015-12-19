@@ -1,10 +1,33 @@
 FROM ubuntu:14.04
 MAINTAINER Rene Windegger <rene@windegger.wtf>
-COPY installserver.sh /opt/scripts/installserver.sh
-COPY installlibmaxminddb.sh /opt/scripts/installlibmaxminddb.sh
-COPY installnginx.sh /opt/scripts/installnginx.sh
+COPY scripts /opt/scripts/
 
-RUN /opt/scripts/installnginx.sh
+RUN apt-get update \
+ && apt-get install -y -q --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    dh-autoreconf \
+    git \
+    libc6 \
+    libexpat1 \
+    libgd2-xpm-dev \
+    libgeoip-dev \
+    libpcre3-dev \
+    libperl-dev \
+    libssl-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    unzip \
+    wget \
+    zlib1g-dev \
+ && apt-get clean \
+ && rm -r /var/lib/apt/lists/*
+
+RUN cd /opt/scripts \ 
+ && ./installlibmaxminddb.sh
+
+RUN cd /opt/scripts \
+ && ./installnginx.sh
 
 # Configure Nginx and apply fix for long server names
 RUN echo "daemon off;" >> /opt/nginx/conf/nginx.conf \
