@@ -1,11 +1,6 @@
 FROM ubuntu:14.04
 MAINTAINER Rene Windegger <rene@windegger.wtf>
 
-ENV DOCKER_HOST=unix:///tmp/docker.sock DOCKER_GEN_VERSION=0.4.2 NGINX_VERSION=1.9.9 NPS_VERSION=1.10.33.2 NAXSI_VERSION=0.54 CP_VERSION=2.1
-
-# Copy base Scripts
-COPY scripts /opt/scripts/
-
 # Install dependencies
 RUN apt-get update \
  && apt-get install -y -q --no-install-recommends \
@@ -29,6 +24,18 @@ RUN apt-get update \
  && apt-get clean \
  && rm -r /var/lib/apt/lists/*
 
+# Install Forego
+RUN wget -P /usr/local/bin https://godist.herokuapp.com/projects/ddollar/forego/releases/current/linux-amd64/forego \
+ && chmod u+x /usr/local/bin/forego
+ 
+# Setup Environment Variables
+ENV DOCKER_GEN_VERSION=0.4.2
+
+# Install Dockergen
+RUN wget https://github.com/jwilder/docker-gen/releases/download/$DOCKER_GEN_VERSION/docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
+ && tar -C /usr/local/bin -xvzf docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
+ && rm docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz
+ 
 # Install libmaxminddb
 RUN mkdir ~/src -p \
  && cd ~/src \
@@ -52,6 +59,8 @@ RUN mkdir ~/src -p \
  && rm src -R
 
 # Install nginx
+ENV NGINX_VERSION=1.9.9 NPS_VERSION=1.10.33.2 NAXSI_VERSION=0.54 CP_VERSION=2.1
+
 RUN mkdir ~/src -p \
  && cd ~/src \
  && wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
@@ -120,21 +129,16 @@ RUN mkdir ~/src -p \
  && echo 'daemon off;' >> /opt/nginx/conf/nginx.conf \
  && sed -i 's@^http {@&\n    server_names_hash_bucket_size 128;@g' /opt/nginx/conf/nginx.conf
 
-# Install Forego
-RUN wget -P /usr/local/bin https://godist.herokuapp.com/projects/ddollar/forego/releases/current/linux-amd64/forego \
- && chmod u+x /usr/local/bin/forego
-
+ # Copy base Scripts
+COPY scripts /opt/scripts/
 WORKDIR /opt/scripts/
-
-RUN wget https://github.com/jwilder/docker-gen/releases/download/$DOCKER_GEN_VERSION/docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
- && tar -C /usr/local/bin -xvzf docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
- && rm docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz
-
-EXPOSE 80 443
 
 COPY html /opt/nginx/html
 
+EXPOSE 80 443
 VOLUME /opt/nginx/html /opt/certs
+
+ENV DOCKER_HOST=unix:///tmp/docker.sock
 
 ENTRYPOINT ["/opt/scripts/docker-entrypoint.sh"]
 CMD ["forego", "start", "-r"]
