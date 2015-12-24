@@ -9,6 +9,7 @@ COPY scripts /opt/scripts/
 # Install dependencies
 RUN apt-get update \
  && apt-get install -y -q --no-install-recommends \
+	libgoogle-perftools-dev \
     build-essential \
     ca-certificates \
     dh-autoreconf \
