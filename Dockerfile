@@ -59,7 +59,7 @@ RUN mkdir ~/src -p \
  && unzip release-$NPS_VERSION-beta.zip \
  && cd ~/src/ngx_pagespeed-release-$NPS_VERSION-beta/ \
  && wget https://dl.google.com/dl/page-speed/psol/$NPS_VERSION.tar.gz \
- && tar -xzf $NPS_VERSION.tar.gz && # extracts to psol/ \
+ && tar -xzf $NPS_VERSION.tar.gz \
  && cd ~/src \
  && wget https://github.com/nbs-system/naxsi/archive/$NAXSI_VERSION.tar.gz \
  && tar -xzf $NAXSI_VERSION.tar.gz \
