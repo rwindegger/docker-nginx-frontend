@@ -103,7 +103,7 @@ RUN mkdir ~/src -p \
  && rm src -R \
  && mkdir /opt/nginx/conf/conf.d -p \
  && echo 'daemon off;' >> /opt/nginx/conf/nginx.conf \
- && sed -i 's@^http @&\n    server_names_hash_bucket_size 128;@g' /opt/nginx/conf/nginx.conf
+ && sed -i 's@^http {@&\n    server_names_hash_bucket_size 128;@g' /opt/nginx/conf/nginx.conf
 
 # Install Forego
 RUN wget -P /usr/local/bin https://godist.herokuapp.com/projects/ddollar/forego/releases/current/linux-amd64/forego \
