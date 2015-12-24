@@ -51,10 +51,10 @@ RUN mkdir ~/src -p \
  && rm src -R
 
 # Install nginx
-RUN mkdir ~/src -p \ 
+RUN mkdir ~/src -p \
  && cd ~/src \
  && wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
- && tar -xzf nginx-$NGINX_VERSION.tar.gz \ 
+ && tar -xzf nginx-$NGINX_VERSION.tar.gz \
  && wget https://github.com/pagespeed/ngx_pagespeed/archive/release-$NPS_VERSION-beta.zip \
  && unzip release-$NPS_VERSION-beta.zip \
  && cd ~/src/ngx_pagespeed-release-$NPS_VERSION-beta/ \
@@ -72,15 +72,15 @@ RUN mkdir ~/src -p \
  && git clone --recursive https://github.com/kyprizel/testcookie-nginx-module.git \
  && cd ~/src/nginx-$NGINX_VERSION/ \
  && ./configure \
-   --add-module=${HOME}/src/naxsi-$NAXSI_VERSION/naxsi_src \
-   --add-module=${HOME}/src/nginx_accept_language_module \
-   --add-module=${HOME}/src/ngx_cache_purge \
-   --add-module=${HOME}/src/ngx_http_accounting_module \
-   --add-module=${HOME}/src/ngx_http_enhanced_memcached_module \
-   --add-module=${HOME}/src/ngx_http_substitutions_filter_module \
-   --add-module=${HOME}/src/ngx_http_geoip2_module \
-   --add-module=${HOME}/src/ngx_pagespeed-release-$NPS_VERSION-beta \
-   --add-module=${HOME}/src/testcookie-nginx-module \
+   --add-module=$HOME/src/naxsi-$NAXSI_VERSION/naxsi_src \
+   --add-module=$HOME/src/nginx_accept_language_module \
+   --add-module=$HOME/src/ngx_cache_purge \
+   --add-module=$HOME/src/ngx_http_accounting_module \
+   --add-module=$HOME/src/ngx_http_enhanced_memcached_module \
+   --add-module=$HOME/src/ngx_http_substitutions_filter_module \
+   --add-module=$HOME/src/ngx_http_geoip2_module \
+   --add-module=$HOME/src/ngx_pagespeed-release-$NPS_VERSION-beta \
+   --add-module=$HOME/src/testcookie-nginx-module \
    --with-http_auth_request_module \
    --with-http_dav_module \
    --with-http_degradation_module \
