@@ -53,56 +53,57 @@ RUN mkdir ~/src -p \
 # Install nginx
 RUN mkdir ~/src -p \ 
  && cd ~/src \
- && wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
- && tar -xzf nginx-${NGINX_VERSION}.tar.gz \ 
- && wget https://github.com/pagespeed/ngx_pagespeed/archive/release-${NPS_VERSION}-beta.zip \
- && unzip release-${NPS_VERSION}-beta.zip \
- && cd ~/src/ngx_pagespeed-release-${NPS_VERSION}-beta/ \
- && wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}.tar.gz \
- && tar -xzf ${NPS_VERSION}.tar.gz && # extracts to psol/ \
+ && wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
+ && tar -xzf nginx-$NGINX_VERSION.tar.gz \ 
+ && wget https://github.com/pagespeed/ngx_pagespeed/archive/release-$NPS_VERSION-beta.zip \
+ && unzip release-$NPS_VERSION-beta.zip \
+ && cd ~/src/ngx_pagespeed-release-$NPS_VERSION-beta/ \
+ && wget https://dl.google.com/dl/page-speed/psol/$NPS_VERSION.tar.gz \
+ && tar -xzf $NPS_VERSION.tar.gz && # extracts to psol/ \
  && cd ~/src \
- && wget https://github.com/nbs-system/naxsi/archive/${NAXSI_VERSION}.tar.gz \
- && tar -xzf ${NAXSI_VERSION}.tar.gz \
- && git clone --recursive https://github.com/bpaquet/ngx_http_enhanced_memcached_module.git \
+ && wget https://github.com/nbs-system/naxsi/archive/$NAXSI_VERSION.tar.gz \
+ && tar -xzf $NAXSI_VERSION.tar.gz \
  && git clone --recursive https://github.com/giom/nginx_accept_language_module.git \
  && git clone --recursive https://github.com/FRiCKLE/ngx_cache_purge.git \
- && git clone --recursive https://github.com/yaoweibin/ngx_http_substitutions_filter_module.git \
- && git clone --recursive https://github.com/leev/ngx_http_geoip2_module.git \
  && git clone --recursive https://github.com/rwindegger/ngx_http_accounting_module.git \
+ && git clone --recursive https://github.com/bpaquet/ngx_http_enhanced_memcached_module.git \
+ && git clone --recursive https://github.com/leev/ngx_http_geoip2_module.git \
+ && git clone --recursive https://github.com/yaoweibin/ngx_http_substitutions_filter_module.git \
  && git clone --recursive https://github.com/kyprizel/testcookie-nginx-module.git \
- && cd ~/src/nginx-${NGINX_VERSION}/ \
- && ./configure --add-module=${HOME}/src/naxsi-${NAXSI_VERSION}/naxsi_src \
-   --add-module=${HOME}/src/ngx_pagespeed-release-${NPS_VERSION}-beta \
-   --add-module=${HOME}/src/testcookie-nginx-module \
-   --add-module=${HOME}/src/ngx_http_enhanced_memcached_module \
+ && cd ~/src/nginx-$NGINX_VERSION/ \
+ && ./configure \
+   --add-module=${HOME}/src/naxsi-$NAXSI_VERSION/naxsi_src \
    --add-module=${HOME}/src/nginx_accept_language_module \
    --add-module=${HOME}/src/ngx_cache_purge \
+   --add-module=${HOME}/src/ngx_http_accounting_module \
+   --add-module=${HOME}/src/ngx_http_enhanced_memcached_module \
    --add-module=${HOME}/src/ngx_http_substitutions_filter_module \
    --add-module=${HOME}/src/ngx_http_geoip2_module \
-   --add-module=${HOME}/src/ngx_http_accounting_module \
+   --add-module=${HOME}/src/ngx_pagespeed-release-$NPS_VERSION-beta \
+   --add-module=${HOME}/src/testcookie-nginx-module \
    --with-http_auth_request_module \
+   --with-http_dav_module \
    --with-http_degradation_module \
-   --with-http_perl_module \
    --with-http_gzip_static_module \
    --with-http_gunzip_module \
    --with-http_image_filter_module \
    --with-http_mp4_module \
+   --with-http_perl_module \
    --with-http_secure_link_module \
-   --with-http_v2_module \
    --with-http_ssl_module \
    --with-http_sub_module \
-   --with-http_dav_module \
+   --with-http_v2_module \
    --with-http_xslt_module \
    --prefix=/opt/nginx \
    --user=www-data \
    --group=www-data \
  && make \
  && make install \
- && mkdir -p /opt/nginx/conf/conf.d \
+ && mkdir /opt/nginx/conf/conf.d -p \
  && cd ~ \
  && rm src -R \
  && echo "daemon off;" >> /opt/nginx/conf/nginx.conf \
- && sed -i 's/^http {/&\n    server_names_hash_bucket_size 128;/g' /opt/nginx/conf/nginx.conf
+ && sed -i 's@^http {@&\n    server_names_hash_bucket_size 128;@g' /opt/nginx/conf/nginx.conf
 
 # Install Forego
 RUN wget -P /usr/local/bin https://godist.herokuapp.com/projects/ddollar/forego/releases/current/linux-amd64/forego \
