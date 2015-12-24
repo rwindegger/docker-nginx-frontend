@@ -72,5 +72,6 @@ cd ~/src/nginx-${NGINX_VERSION}/ &&
 
 make &&
 sudo make install &&
+mkdir -p /opt/nginx/conf/conf.d &&
 cd ~ && 
 sudo rm src -R
