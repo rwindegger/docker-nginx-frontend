@@ -128,6 +128,7 @@ RUN mkdir ~/src -p \
  && mkdir /opt/nginx/conf/conf.d -p \
  && echo 'daemon off;' >> /opt/nginx/conf/nginx.conf \
  && sed -i 's@^http {@&\n    server_names_hash_bucket_size 128;@g' /opt/nginx/conf/nginx.conf
+ && sed -i '117 a    include /opt/nginx/conf/conf.d/*.conf;' /opt/nginx/conf/nginx.conf
 
  # Copy base Scripts
 COPY scripts /opt/scripts/
