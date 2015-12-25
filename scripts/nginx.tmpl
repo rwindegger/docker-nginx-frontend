@@ -152,7 +152,7 @@ server {
                 {{ if (exists (printf "/opt/nginx/conf/vhost.d/%s_location" $host)) }}
                 include {{ printf "/opt/nginx/conf/vhost.d/%s_location" $host}};
                 {{ else if (exists "/opt/nginx/conf/vhost.d/default_location") }}
-                include /opt/nginx/vhost.d/conf/default_location;
+                include /opt/nginx/conf/vhost.d/default_location;
                 {{ end }}
 	}
 }

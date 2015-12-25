@@ -137,7 +137,7 @@ WORKDIR /opt/scripts/
 COPY html /opt/nginx/html
 
 EXPOSE 80 443
-VOLUME /opt/nginx/html /opt/certs
+VOLUME /opt/nginx/html /opt/certs /opt/nginx/conf/htpasswd /opt/nginx/conf/vhost.d
 
 ENV DOCKER_HOST=unix:///tmp/docker.sock
 
