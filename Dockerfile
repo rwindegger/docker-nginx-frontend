@@ -29,7 +29,7 @@ RUN wget -P /usr/local/bin https://github.com/jwilder/forego/releases/download/v
  && chmod u+x /usr/local/bin/forego
  
 # Setup Environment Variables
-ENV DOCKER_GEN_VERSION=0.4.2
+ENV DOCKER_GEN_VERSION=0.7.3
 
 # Install Dockergen
 RUN wget https://github.com/jwilder/docker-gen/releases/download/$DOCKER_GEN_VERSION/docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
@@ -59,7 +59,7 @@ RUN mkdir ~/src -p \
  && rm src -R
 
 # Install nginx
-ENV NGINX_VERSION=1.9.9 NPS_VERSION=1.10.33.2 NAXSI_VERSION=0.54 CP_VERSION=2.1
+ENV NGINX_VERSION=1.11.2 NPS_VERSION=1.11.33.2 NAXSI_VERSION=0.54 CP_VERSION=2.1
 
 RUN mkdir ~/src -p \
  && cd ~/src \
