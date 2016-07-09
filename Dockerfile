@@ -25,7 +25,7 @@ RUN apt-get update \
  && rm -r /var/lib/apt/lists/*
 
 # Install Forego
-RUN wget -P /usr/local/bin https://godist.herokuapp.com/projects/ddollar/forego/releases/current/linux-amd64/forego \
+RUN wget -P /usr/local/bin https://dl.equinox.io/ddollar/forego/stable \
  && chmod u+x /usr/local/bin/forego
  
 # Setup Environment Variables
