@@ -81,7 +81,7 @@ upstream {{ $host }} {
 	{{ range $knownNetwork := $CurrentContainer.Networks }}
 		{{ range $containerNetwork := $container.Networks }}
 			{{ if eq $knownNetwork.Name $containerNetwork.Name }}
-				## Can be connect with "{{ $containerNetwork.Name }}" network
+			## Can be connect with "{{ $containerNetwork.Name }}" network
 
 				{{/* If only 1 port exposed, use that */}}
 				{{ if eq $addrLen 1 }}
@@ -153,9 +153,7 @@ server {
 	ssl_dhparam {{ printf "/opt/certs/%s.dhparam.pem" $cert }};
 	{{ end }}
 
-	{{ if (ne $https_method "noredirect") }}
 	add_header Strict-Transport-Security "max-age=31536000";
-	{{ end }}
 
 	{{ if (exists (printf "/opt/nginx/conf/vhost.d/%s" $host)) }}
 	include {{ printf "/opt/nginx/conf/vhost.d/%s" $host }};
