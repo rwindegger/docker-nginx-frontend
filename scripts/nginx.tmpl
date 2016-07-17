@@ -157,9 +157,8 @@ server {
 	{{ else if (exists "/opt/nginx/conf/vhost.d/default") }}
 	include /opt/nginx/conf/vhost.d/default;
 	{{ end }}
-
+	include /opt/nginx/conf/log.conf;
 	location / {
-		include /opt/nginx/conf/nps.rules;
 		proxy_pass {{ trim $proto }}://{{ trim $host }};
 		{{ if (exists (printf "/opt/nginx/conf/htpasswd/%s" $host)) }}
 		auth_basic	"Restricted {{ $host }}";
@@ -187,8 +186,9 @@ server {
 	include /opt/nginx/conf/vhost.d/default;
 	{{ end }}
 
+	include /opt/nginx/conf/log.conf;
+
 	location / {
-		include /opt/nginx/conf/nps.rules;
 		proxy_pass {{ trim $proto }}://{{ trim $host }};
 		{{ if (exists (printf "/opt/nginx/conf/htpasswd/%s" $host)) }}
 		auth_basic	"Restricted {{ $host }}";
