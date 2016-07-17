@@ -130,7 +130,7 @@ RUN mkdir ~/src -p \
  && rm src -R \
  && mkdir /opt/nginx/conf/conf.d -p \
  && echo 'daemon off;' >> /opt/nginx/conf/nginx.conf \
- && sed -i 's@^http {@&\n    include /opt/nginx/conf/log.conf\n    include /opt/nginx/conf/naxsi_core.rules;\n    include /opt/nginx/conf/nps.rules;\n    server_names_hash_bucket_size 128;@g' /opt/nginx/conf/nginx.conf \
+ && sed -i 's@^http {@&\n    include /opt/nginx/conf/log.conf;\n    include /opt/nginx/conf/naxsi_core.rules;\n    include /opt/nginx/conf/nps.rules;\n    server_names_hash_bucket_size 128;@g' /opt/nginx/conf/nginx.conf \
  && sed -i '117 a    include /opt/nginx/conf/conf.d/*.conf;' /opt/nginx/conf/nginx.conf
 
 COPY nps.rules /opt/nginx/conf/nps.rules
