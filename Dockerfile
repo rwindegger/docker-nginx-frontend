@@ -59,7 +59,7 @@ RUN mkdir ~/src -p \
  && rm src -R
 
 # Install nginx
-ENV NGINX_VERSION=1.11.2 NPS_VERSION=1.11.33.2 NAXSI_VERSION=0.54 CP_VERSION=2.1
+ENV NGINX_VERSION=1.11.2 NPS_VERSION=1.11.33.2 NAXSI_VERSION=0.55rc2 CP_VERSION=2.1
 
 RUN mkdir ~/src -p \
  && cd ~/src \
