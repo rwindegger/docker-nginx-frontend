@@ -4,7 +4,7 @@ MAINTAINER Rene Windegger <rene@windegger.wtf>
 # Install dependencies
 RUN apt-get update \
  && apt-get install -y -q --no-install-recommends \
-	libgoogle-perftools-dev \
+    libgoogle-perftools-dev \
     build-essential \
     ca-certificates \
     dh-autoreconf \
@@ -125,7 +125,8 @@ RUN mkdir ~/src -p \
  && make install \
  && cd ~ \
  && cd src \
- && cp naxsi-$NAXSI_VERSION/naxsi_config/naxsi_core.rules /opt/nginx/conf/
+ && cp naxsi-$NAXSI_VERSION/naxsi_config/naxsi_core.rules /opt/nginx/conf/ \
+ && cd ~ \
  && rm src -R \
  && mkdir /opt/nginx/conf/conf.d -p \
  && echo 'daemon off;' >> /opt/nginx/conf/nginx.conf \
