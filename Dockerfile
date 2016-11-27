@@ -59,7 +59,7 @@ RUN mkdir ~/src -p \
  && rm src -R
 
 # Install nginx
-ENV NGINX_VERSION=1.11.6 NPS_VERSION=1.11.33.4 NAXSI_VERSION=0.55.1 CP_VERSION=2.1 NGX_PURGE_VERSION=2.3 RTMP_VERSION=1.1.10 ENHANCED_MEMCACHED_VERSION=0.2
+ENV NGINX_VERSION=1.11.6 NPS_VERSION=1.11.33.4 NAXSI_VERSION=0.55.1 CP_VERSION=2.1 NGX_PURGE_VERSION=2.3 RTMP_VERSION=1.1.10 ENHANCED_MEMCACHED_VERSION=0.2 GEOIP2_VERSION=2.0 ACCOUNTING_VERSION=1.0 SUBSTITUTIONS_VERSION=0.6.4
 
 RUN mkdir ~/src -p \
  && cd ~/src \
@@ -79,11 +79,14 @@ RUN mkdir ~/src -p \
  && tar -xzf v$RTMP_VERSION.tar.gz \
  && wget https://github.com/bpaquet/ngx_http_enhanced_memcached_module/archive/v$ENHANCED_MEMCACHED_VERSION.tar.gz \
  && tar -xzf v$ENHANCED_MEMCACHED_VERSION.tar.gz \
+ && wget https://github.com/leev/ngx_http_geoip2_module/archive/$GEOIP2_VERSION.tar.gz \
+ && tar -xzf $GEOIP2_VERSION.tar.gz \
+ && wget https://github.com/Lax/ngx_http_accounting_module/archive/v$ACCOUNTING_VERSION.tar.gz \
+ && tar -xzf v$ACCOUNTING_VERSION.tar.gz \
+ && wget https://github.com/yaoweibin/ngx_http_substitutions_filter_module/archive/v$SUBSTITUTIONS_VERSION.tar.gz \
+ && tar -xzf v$SUBSTITUTIONS_VERSION.tar.gz \
  && git clone --recursive https://github.com/giom/nginx_accept_language_module.git \
  && git clone --recursive https://github.com/kyprizel/testcookie-nginx-module.git \
- && git clone --recursive https://github.com/leev/ngx_http_geoip2_module.git \
- && git clone --recursive https://github.com/rwindegger/ngx_http_accounting_module.git \
- && git clone --recursive https://github.com/yaoweibin/ngx_http_substitutions_filter_module.git \
  && git clone --recursive https://github.com/vozlt/nginx-module-vts.git \
  && cd ~/src/nginx-$NGINX_VERSION/ \
  && ./configure \
@@ -92,10 +95,10 @@ RUN mkdir ~/src -p \
    --add-module=$HOME/src/nginx-rtmp-module-$RTMP_VERSION \
    --add-module=$HOME/src/nginx_accept_language_module \
    --add-module=$HOME/src/ngx_cache_purge-$NGX_PURGE_VERSION \
-   --add-module=$HOME/src/ngx_http_accounting_module \
+   --add-module=$HOME/src/ngx_http_accounting_module-$ACCOUNTING_VERSION \
    --add-module=$HOME/src/ngx_http_enhanced_memcached_module-$ENHANCED_MEMCACHED_VERSION \
-   --add-module=$HOME/src/ngx_http_geoip2_module \
-   --add-module=$HOME/src/ngx_http_substitutions_filter_module \
+   --add-module=$HOME/src/ngx_http_geoip2_module-$GEOIP2_VERSION \
+   --add-module=$HOME/src/ngx_http_substitutions_filter_module-$SUBSTITUTIONS_VERSION \
    --add-module=$HOME/src/ngx_pagespeed-release-$NPS_VERSION-beta \
    --add-module=$HOME/src/testcookie-nginx-module \
    --with-google_perftools_module \
