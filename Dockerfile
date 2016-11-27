@@ -46,10 +46,10 @@ RUN mkdir ~/src -p \
  && make \
  && make check \
  && make install \
- && sudo ldconfig \
+ && ldconfig \
  && cd ~/src \
- && sudo rm libmaxminddb -R \
- && sudo mkdir /opt/mmdb -p \
+ && rm libmaxminddb -R \
+ && mkdir /opt/mmdb -p \
  && cd /opt/mmdb \
  && wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz \
  && wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz \
@@ -59,7 +59,7 @@ RUN mkdir ~/src -p \
  && rm src -R
 
 # Install nginx
-ENV NGINX_VERSION=1.11.2 NPS_VERSION=1.11.33.2 NAXSI_VERSION=0.55rc2 CP_VERSION=2.1
+ENV NGINX_VERSION=1.11.6 NPS_VERSION=1.11.33.4 NAXSI_VERSION=0.55.1 CP_VERSION=2.1 NGX_PURGE_VERSION=2.3 RTMP_VERSION=1.1.10 ENHANCED_MEMCACHED_VERSION=0.2
 
 RUN mkdir ~/src -p \
  && cd ~/src \
@@ -73,11 +73,13 @@ RUN mkdir ~/src -p \
  && cd ~/src \
  && wget https://github.com/nbs-system/naxsi/archive/$NAXSI_VERSION.tar.gz \
  && tar -xzf $NAXSI_VERSION.tar.gz \
- && git clone --recursive https://github.com/FRiCKLE/ngx_cache_purge.git \
- && git clone --recursive https://github.com/arut/nginx-rtmp-module.git \
- && git clone --recursive https://github.com/bpaquet/ngx_http_enhanced_memcached_module.git \
+ && wget https://github.com/FRiCKLE/ngx_cache_purge/archive/$NGX_PURGE_VERSION.tar.gz \
+ && tar -xzf $NGX_PURGE_VERSION.tar.gz \
+ && wget https://github.com/arut/nginx-rtmp-module/archive/v$RTMP_VERSION.tar.gz \
+ && tar -xzf v$RTMP_VERSION.tar.gz \
+ && wget https://github.com/bpaquet/ngx_http_enhanced_memcached_module/archive/v$ENHANCED_MEMCACHED_VERSION.tar.gz \
+ && tar -xzf v$ENHANCED_MEMCACHED_VERSION.tar.gz \
  && git clone --recursive https://github.com/giom/nginx_accept_language_module.git \
- && git clone --recursive https://github.com/gnosek/nginx-upstream-fair.git \
  && git clone --recursive https://github.com/kyprizel/testcookie-nginx-module.git \
  && git clone --recursive https://github.com/leev/ngx_http_geoip2_module.git \
  && git clone --recursive https://github.com/rwindegger/ngx_http_accounting_module.git \
@@ -87,12 +89,11 @@ RUN mkdir ~/src -p \
  && ./configure \
    --add-module=$HOME/src/naxsi-$NAXSI_VERSION/naxsi_src \
    --add-module=$HOME/src/nginx-module-vts \
-   --add-module=$HOME/src/nginx-rtmp-module \
-   --add-module=$HOME/src/nginx-upstream-fair \
+   --add-module=$HOME/src/nginx-rtmp-module-$RTMP_VERSION \
    --add-module=$HOME/src/nginx_accept_language_module \
-   --add-module=$HOME/src/ngx_cache_purge \
+   --add-module=$HOME/src/ngx_cache_purge-$NGX_PURGE_VERSION \
    --add-module=$HOME/src/ngx_http_accounting_module \
-   --add-module=$HOME/src/ngx_http_enhanced_memcached_module \
+   --add-module=$HOME/src/ngx_http_enhanced_memcached_module-$ENHANCED_MEMCACHED_VERSION \
    --add-module=$HOME/src/ngx_http_geoip2_module \
    --add-module=$HOME/src/ngx_http_substitutions_filter_module \
    --add-module=$HOME/src/ngx_pagespeed-release-$NPS_VERSION-beta \
